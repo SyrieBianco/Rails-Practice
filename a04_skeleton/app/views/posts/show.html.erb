@@ -1,2 +1,35 @@
-<h1>Posts#show</h1>
-<p>Find me in app/views/posts/show.html.erb</p>
+<div class="post-content">
+  <h1><%= @post.title %></h1>
+  <h2>by <%= @post.user.username %></h2>
+  <article><%= @post.body %> </article>
+</div>
+
+<div class="tags">
+
+  <label>Tags
+    <ul class="tags-index">
+      <% @post.tags.each do |tag| %>
+        <%= tag.name %> | <%= button_to "Remove Tag", tag_url(tag.id), method: :delete %>
+      <% end %>
+    </ul>
+  </label>
+
+  <label>Add a New Tag
+    <form class="tag-form" action="<%= tags_url %>" method="post">
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+
+      <input type="hidden" name="tag[post_id]" value="<%= params[:id] %>">
+
+      <label>Name:
+        <input type="text" name="tag[name]" value="<%= @tag.name if @tag %>">
+      </label>
+
+      <input type="submit" name="" value="Add Tag">
+    </form>
+  </label>
+</div>
+
+<footer>
+  <%= link_to "Edit Post", edit_post_url(@post) %>
+  <%= link_to "All Posts", posts_url %>
+</footer>
